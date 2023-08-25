@@ -1,9 +1,7 @@
 package com.example.vehicleApp.vehicle;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,9 @@ public class VehicleController {
     @GetMapping
     public List<Vehicle> getVehicles() {
         return vehicleService.getVehicles();
+    }
+    @PostMapping
+    public void registerNewVehicle(@RequestBody Vehicle vehicle) {
+        vehicleService.addNewVehicle(vehicle);
     }
 }

@@ -1,10 +1,29 @@
 package com.example.vehicleApp.vehicle;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table
 public class Vehicle {
+    @Id
+    @SequenceGenerator(
+            name = "vehicle_sequence",
+            sequenceName = "vehicle_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue (
+            strategy = GenerationType.SEQUENCE,
+            generator = "vehicle_sequence"
+    )
+
     private Long id;
     private String name;
     private int available;
     private int total;
+
+    public Vehicle() {
+
+    }
 
     public Vehicle(Long id,
                    String name,

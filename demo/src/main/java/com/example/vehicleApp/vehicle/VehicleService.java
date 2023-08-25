@@ -1,17 +1,29 @@
 package com.example.vehicleApp.vehicle;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Component
+@Service
 public class VehicleService {
+
+    private final VehicleRepository vehicleRepository;
+@Autowired
+    public VehicleService(VehicleRepository vehicleRepository) {
+        this.vehicleRepository = vehicleRepository;
+    }
     public List<Vehicle> getVehicles() {
-        return List.of(
-                new Vehicle(1L,
-                        "Recon",
-                        3,
-                        10)
-        );
+        return vehicleRepository.findAll();
+    }
+    public void addNewVehicle(Vehicle vehicle) {
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findVehicleByName(vehicle.getName());
+
+        if (vehicleOptional.isPresent()) {
+            throw new IllegalStateException("This vehicle is already defined.");
+        }
+
+        vehicleRepository.save(vehicle);
     }
 }
