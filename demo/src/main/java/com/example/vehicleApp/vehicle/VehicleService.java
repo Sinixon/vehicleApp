@@ -41,7 +41,53 @@ public class VehicleService {
     }
 
     @Transactional
-    public void updateStudent(Long vehicleId, String name, int available, int total) {
+    public void updateVehicle(Long vehicleId, String name) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new IllegalStateException("Vehicle with name " + name + " does not exists."));
+
+        if (name != null && name.length() > 0 && !Objects.equals(vehicle.getName(), name)) {
+            vehicle.setName(name);
+        }
+    }
+
+    @Transactional
+    public void updateVehicleAvailable(Long vehicleId, String name, int available) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new IllegalStateException("Vehicle with name " + name + " does not exists."));
+
+        if (name != null && name.length() > 0 && !Objects.equals(vehicle.getName(), name)) {
+            vehicle.setName(name);
+        }
+
+        if (available >= 0) {
+            if (available > vehicle.getTotal()) {
+                throw new IllegalStateException("The amount of vehicles available cannot exceed the total amount of vehicles present");
+            }
+            vehicle.setAvailable(available);
+        }
+
+    }
+
+    @Transactional
+    public void updateVehicleTotal(Long vehicleId, String name, int total) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new IllegalStateException("Vehicle with name " + name + " does not exists."));
+
+        if (name != null && name.length() > 0 && !Objects.equals(vehicle.getName(), name)) {
+            vehicle.setName(name);
+        }
+
+        if (total > 0) {
+            if (vehicle.getAvailable() > total) {
+                throw new IllegalStateException("The amount of vehicles available cannot exceed the total amount of vehicles present");
+            }
+            vehicle.setTotal(total);
+        }
+
+    }
+
+    @Transactional
+    public void updateVehicle(Long vehicleId, String name, int available, int total) {
         Vehicle vehicle = vehicleRepository.findById(vehicleId)
                 .orElseThrow(() -> new IllegalStateException("Vehicle with name " + name + " does not exists."));
 
@@ -57,7 +103,7 @@ public class VehicleService {
             vehicle.setAvailable(available);
             vehicle.setTotal(total);
         }
-
-        //TODO: Make a request without available and total
     }
+
+
 }

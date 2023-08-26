@@ -33,6 +33,15 @@ public class VehicleController {
                               @RequestParam(required = false) String name,
                               @RequestParam(required = false) Integer available,
                               @RequestParam(required = false) Integer total) {
-        vehicleService.updateStudent(vehicleId, name, available, total);
+
+        if (available != null && total != null) {
+            vehicleService.updateVehicle(vehicleId, name, available, total);
+        } else if (available != null) {
+            vehicleService.updateVehicleAvailable(vehicleId, name, available);
+        } else if (total != null) {
+            vehicleService.updateVehicleTotal(vehicleId, name, total);
+        } else {
+            vehicleService.updateVehicle(vehicleId, name);
+        }
     }
 }
